@@ -18,44 +18,38 @@ This repository contains a **curated, non-proprietary subset** of the engineerin
 ## High-level architecture
 
 ```text
-User
-  |
-  v
 Room Capture
-  |
-  v
+    |
+    v
 Technical Image Quality
-  |
-  v
+    |
+    v
 Multimodal Vision Analysis
-  |
-  v
+    |
+    v
 Structured Room Representation
-  |
-  v
+    |
+    v
 Human Review / Confirmation
-  |
-  v
+    |
+    v
 Verified Room State
-  |
-  +--------------------+
-  |                    |
-  v                    v
-Design Request     Existing Room Knowledge
-  |                    |
-  +---------+----------+
-            |
-            v
-       AI Reasoning
-            |
-            v
-     Candidate Solution
-            |
-            v
-        Evaluation
-            |
-            v
-      Recommendation
+    |
+    +-------------------+
+    |                   |
+    v                   v
+Design Request     Room Knowledge
+    |                   |
+    +---------+---------+
+              |
+              v
+         AI Reasoning
+              |
+              v
+      Solution Evaluation
+              |
+              v
+        Recommendation
 ```
 
 The complete private system contains additional domain intelligence and orchestration logic that is not required to understand the engineering architecture shown here.
@@ -66,25 +60,38 @@ The project deliberately separates **perception from decision-making**. The visi
 
 This makes the application an orchestrated AI system rather than a direct image-to-answer LLM wrapper.
 
-## Public repository scope
+## Public implementation highlights
+
+`backend/app/services/image_quality.py` contains a deterministic pre-inference quality gate using Pillow, NumPy and OpenCV. It checks image integrity, minimum resolution, Laplacian-based sharpness and exposure before multimodal processing.
+
+`backend/app/ai/gemini_client.py` demonstrates a multimodal provider adapter that combines contextual text and image bytes while constraining model responses with a Pydantic-compatible JSON schema.
+
+`backend/app/ai/public_outputs.py` demonstrates typed boundaries between probabilistic AI output and deterministic application code. The schema is deliberately reduced and is **not** the private production Digital Twin.
+
+## Repository structure
 
 ```text
 backend/
   app/
-    ai/             # public AI interfaces and structured-output examples
-    api/            # selected FastAPI endpoints
-    core/           # configuration and shared infrastructure
-    db/             # database infrastructure
-    models/         # curated public domain model
-    schemas/        # public API/data contracts
-    services/       # selected application and image-quality services
+    ai/
+      gemini_client.py
+      request.py
+      public_outputs.py
+    schemas/
+      image.py
+    services/
+      image_quality.py
+    main.py
+  tests/
+  requirements.txt
 
 docs/
   architecture.md
   ai-pipeline.md
   ip-boundary.md
 
-tests/
+.env.example
+.gitignore
 ```
 
 ## Technology stack
@@ -101,9 +108,36 @@ OpenCV · Pillow · NumPy
 **Data & Infrastructure**  
 PostgreSQL · Alembic · environment-based configuration
 
+## Run locally
+
+```bash
+git clone https://github.com/alMaamari7/ai-interior-designer-portfolio.git
+cd ai-interior-designer-portfolio/backend
+
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+The API is then available locally and FastAPI exposes its interactive OpenAPI documentation at `/docs`.
+
+To run the public tests:
+
+```bash
+cd backend
+pytest
+```
+
+A provider API key is only needed when directly using the multimodal Gemini adapter. Copy `.env.example` to `.env` and provide your own credentials. `.env` files are ignored by Git.
+
 ## Project status
 
-This is an actively developed project. The private repository is the source of truth for the full product. This public repository is maintained as an engineering portfolio and therefore contains selected implementations and deliberately abstracted interfaces.
+This is an actively developed project. The private repository is the source of truth for the full product. This public repository is maintained as an engineering portfolio and therefore contains selected real implementations and deliberately abstracted interfaces.
+
+The public portfolio currently demonstrates the system boundaries and selected implemented components; it does not claim that every element in the high-level product workflow is included in this repository.
 
 ## Disclosure policy
 
