@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+psycopg[binary]
+alembic
+python-multipart
+pillow
+numpy
+opencv-python-headless
+google-genai
+python-dotenv
+pytest
+pytest-asyncio
+httpx
