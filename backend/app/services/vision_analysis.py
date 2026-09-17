@@ -3,7 +3,7 @@ import json
 from fastapi import UploadFile
 
 from app.ai.gemini_client import GeminiClient
-from app.ai.public_outputs import PublicVisionOutput
+from app.ai.public_outputs import PublicRoomAnalysis
 from app.ai.request import AIRequest
 from app.schemas.image import ImageInput, TechnicalQualityResult
 from app.services.image_quality import TechnicalImageQuality
@@ -41,7 +41,7 @@ class VisionAnalysisService:
         self,
         image: UploadFile,
         room_context: str = "",
-    ) -> tuple[TechnicalQualityResult, PublicVisionOutput]:
+    ) -> tuple[TechnicalQualityResult, PublicRoomAnalysis]:
         quality = await self.quality_service.evaluate(image)
         if not quality.passed:
             raise ImageQualityRejectedError(quality)
@@ -60,9 +60,9 @@ class VisionAnalysisService:
                     image_type="room_capture",
                 )
             ],
-            output_schema=PublicVisionOutput,
+            output_schema=PublicRoomAnalysis,
         )
 
         raw_result = client.send(request)
-        structured_result = PublicVisionOutput.model_validate(json.loads(raw_result))
+        structured_result = PublicRoomAnalysis.model_validate(json.loads(raw_result))
         return quality, structured_result
