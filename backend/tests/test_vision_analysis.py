@@ -5,8 +5,7 @@ import pytest
 from fastapi import UploadFile
 from PIL import Image
 
-from app.ai.public_outputs import PublicVisionOutput
-from app.services.image_quality import TechnicalImageQualityConfig
+from app.ai.public_outputs import PublicRoomAnalysis
 from app.services.vision_analysis import VisionAnalysisService
 
 
@@ -20,7 +19,7 @@ class PassingQualityService:
 class FakeAIClient:
     def send(self, request):
         assert request.images
-        assert request.output_schema is PublicVisionOutput
+        assert request.output_schema is PublicRoomAnalysis
         return json.dumps(
             {
                 "summary": "Bright living space with visible seating.",
@@ -31,7 +30,6 @@ class FakeAIClient:
                         "confidence": 0.93,
                     }
                 ],
-                "limitations": [],
             }
         )
 
