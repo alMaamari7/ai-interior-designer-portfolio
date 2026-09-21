@@ -13,7 +13,7 @@ class PublicRoomAnalysis(BaseModel):
     """Reduced portfolio schema; not the production Digital Twin schema."""
 
     summary: str
-    observations: list[Observation]
+    observations: list[Observation] = Field(default_factory=list)
 
 
 class ReasoningContext(BaseModel):
@@ -21,7 +21,7 @@ class ReasoningContext(BaseModel):
 
     room_summary: str
     user_goals: list[str]
-    constraints: list[str] = []
+    constraints: list[str] = Field(default_factory=list)
     budget: str | None = None
 
 
@@ -29,5 +29,5 @@ class Recommendation(BaseModel):
     """Generic public result contract for an evaluated recommendation."""
 
     summary: str
-    rationale: list[str]
-    considerations: list[str] = []
+    rationale: list[str] = Field(default_factory=list)
+    considerations: list[str] = Field(default_factory=list)
