@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.api.analysis import router as analysis_router
+from app.api.capture import router as capture_router
 from app.api.vision import router as vision_router
 
 app = FastAPI(
@@ -13,6 +14,7 @@ app = FastAPI(
 )
 
 app.include_router(vision_router)
+app.include_router(capture_router)
 app.include_router(analysis_router)
 
 
