@@ -1,6 +1,8 @@
 fastapi
 uvicorn[standard]
 pydantic
+pydantic-settings
+email-validator
 sqlalchemy
 psycopg[binary]
 alembic
@@ -10,6 +12,8 @@ numpy
 opencv-python-headless
 google-genai
 python-dotenv
+python-jose[cryptography]
+pwdlib[argon2]
 pytest
 pytest-asyncio
 httpx
