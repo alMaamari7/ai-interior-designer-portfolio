@@ -8,6 +8,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.ai_analysis import AIAnalysis
+    from app.models.image import Image
 
 
 class Room(Base):
@@ -32,6 +33,10 @@ class Room(Base):
         server_default=func.now(),
         onupdate=func.now(),
         nullable=False,
+    )
+
+    images: Mapped[list["Image"]] = relationship(
+        back_populates="room", cascade="all, delete-orphan"
     )
 
     ai_analyses: Mapped[list["AIAnalysis"]] = relationship(
