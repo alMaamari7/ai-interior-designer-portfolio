@@ -112,6 +112,34 @@ This supports downstream processing while making the recommendation easier to in
 
 The term "rationale" here refers to application-level justification and evaluation information, not exposure of hidden model chain-of-thought.
 
+## Decision vs State Transformation
+
+A further architecture question appears after a design decision has been evaluated:
+
+> Does the next component still make a new decision, or does it only transform an already approved decision into another structured representation?
+
+Conceptually:
+
+    Reasoning
+        ↓
+    Structured Decision
+        ↓
+    State Transformation?
+        ↓
+    Target Representation?
+
+This boundary is currently under architectural evaluation.
+
+One possible direction is to stop reasoning once the design decision is complete and let a separate responsibility transform that decision into a future-state representation. That could improve separation of concerns and make the decision output an explicit contract between components.
+
+However, this is intentionally documented as a **proposal rather than a finalized implementation**. The architecture still needs to determine whether the transformation introduces additional design decisions or is purely a representation step.
+
+A useful responsibility heuristic is:
+
+> **If a component still decides what should happen, it belongs to decision-making. If it only materializes an already approved decision, it may deserve a separate transformation boundary.**
+
+This question is kept explicit rather than prematurely turning an architectural option into an implementation claim.
+
 ## Why Reasoning Uses Domain State
 
 The reasoning layer is designed to consume structured knowledge about the room rather than depend directly on raw perception internals.
