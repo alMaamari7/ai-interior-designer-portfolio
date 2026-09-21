@@ -22,3 +22,11 @@ class ImageInput(BaseModel):
     data: bytes
     mime_type: str
     image_type: str | None = None
+
+
+class ImageCreationResult(BaseModel):
+    """Result of quality-gated image persistence."""
+
+    created: bool
+    quality: TechnicalQualityResult
+    image_id: int | None = None
