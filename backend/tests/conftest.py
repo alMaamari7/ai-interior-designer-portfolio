@@ -19,6 +19,11 @@ from app.models.budget import Budget  # noqa: F401,E402
 from app.models.building_element import BuildingElement  # noqa: F401,E402
 from app.models.confirmed_ai_analysis import ConfirmedAIAnalysis  # noqa: F401,E402
 from app.models.constraint import Constraint  # noqa: F401,E402
+
+# The production model intentionally uses PostgreSQL ARRAY for Constraint.modifiable_areas.
+# These API tests run on lightweight in-memory SQLite and do not exercise Constraint,
+# so exclude that PostgreSQL-specific table from the SQLite test schema.
+SQLITE_UNSUPPORTED_TABLES = {"constraints"}
 from app.models.constraint_room_object import ConstraintRoomObject  # noqa: F401,E402
 from app.models.design_goal import DesignGoal  # noqa: F401,E402
 from app.models.design_request import DesignRequest  # noqa: F401,E402
@@ -44,13 +49,18 @@ def db_session():
         poolclass=StaticPool,
     )
     TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-    Base.metadata.create_all(bind=engine)
+    sqlite_tables = [
+        table
+        for table in Base.metadata.sorted_tables
+        if table.name not in SQLITE_UNSUPPORTED_TABLES
+    ]
+    Base.metadata.create_all(bind=engine, tables=sqlite_tables)
     db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
-        Base.metadata.drop_all(bind=engine)
+        Base.metadata.drop_all(bind=engine, tables=sqlite_tables)
 
 
 @pytest.fixture()
