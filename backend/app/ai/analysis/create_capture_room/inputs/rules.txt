@@ -1,0 +1,28 @@
+- Nur Entities aus dem Entity Scope verwenden.
+- Room nicht neu erzeugen.
+- Eindeutige Entity IDs erzeugen.
+- Dieselbe physische Entity über mehrere Bilder konsolidieren.
+
+- Wall_1 = Wand mit Eingangstür.
+- Wall_2 = linke angrenzende Wand von Wall_1.
+- Wall_3 = linke angrenzende Wand von Wall_2.
+- Die Wandnummerierung entsprechend dieser Regel fortführen.
+
+- Jede Wall gehört direkt zum Room.
+- Jede Door gehört zu der Wall, an der sie sich befindet bzw. mit der sie baulich verbunden ist.
+- Jede Window gehört zu der Wall, an der sie sich befindet bzw. mit der sie baulich verbunden ist.
+- Ein BuildingElement gehört zu der Wall, wenn es visuell eindeutig dieser Wall zugeordnet werden kann.
+- Ein BuildingElement kann direkt zum Room gehören, wenn keine eindeutige Zuordnung zu einer Wall besteht.
+- Jedes RoomObject gehört direkt zum Room.
+- Der Floor gehört direkt zum Room.
+- Der Ceiling gehört direkt zum Room, sofern er im Entity Scope enthalten und als Entity erkannt wird.
+
+- Eine Entity darf nur einem initialen Owner zugeordnet werden.
+- Eine Ownership-Zuordnung darf nur erfolgen, wenn sie durch die verfügbaren Bilder ausreichend unterstützt wird.
+- Keine Ownership-Beziehung erfinden, wenn die visuelle Evidenz dafür nicht ausreicht.
+
+- Keine vollständige Attributanalyse.
+- Nur groben Spatial Context erzeugen.
+- Keine unbegründeten Spatial Contexts erzeugen.
+- Visible-In-Mapping korrekt halten.
+- Keine zusätzlichen Capture-Entscheidungen treffen.
