@@ -1,0 +1,3 @@
+import {BrowserRouter,Routes,Route} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute"; import LoginPage from "../features/auth/LoginPage"; import RegisterPage from "../features/auth/RegisterPage"; import DashboardPage from "../features/dashboard/DashboardPage"; import RoomPage from "../features/room/RoomPage";
+export default function AppRouter(){return <BrowserRouter><Routes><Route path="/" element={<LoginPage/>}/><Route path="/login" element={<LoginPage/>}/><Route path="/register" element={<RegisterPage/>}/><Route element={<ProtectedRoute/>}><Route path="/dashboard" element={<DashboardPage/>}/><Route path="/profile" element={<div>Profile</div>}/><Route path="/rooms/:roomId" element={<RoomPage/>}/></Route></Routes></BrowserRouter>}
