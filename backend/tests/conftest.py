@@ -19,6 +19,7 @@ from app.models.budget import Budget  # noqa: F401,E402
 from app.models.building_element import BuildingElement  # noqa: F401,E402
 from app.models.confirmed_ai_analysis import ConfirmedAIAnalysis  # noqa: F401,E402
 from app.models.constraint import Constraint  # noqa: F401,E402
+
 from app.models.constraint_room_object import ConstraintRoomObject  # noqa: F401,E402
 from app.models.design_goal import DesignGoal  # noqa: F401,E402
 from app.models.design_request import DesignRequest  # noqa: F401,E402
@@ -44,13 +45,20 @@ def db_session():
         poolclass=StaticPool,
     )
     TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-    Base.metadata.create_all(bind=engine)
+    # These API tests exercise authentication and room ownership only. Build the
+    # minimal SQLite schema they need instead of compiling PostgreSQL-specific
+    # ARRAY columns from unrelated portfolio models.
+    sqlite_tables = [
+        Base.metadata.tables["users"],
+        Base.metadata.tables["rooms"],
+    ]
+    Base.metadata.create_all(bind=engine, tables=sqlite_tables)
     db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
-        Base.metadata.drop_all(bind=engine)
+        Base.metadata.drop_all(bind=engine, tables=sqlite_tables)
 
 
 @pytest.fixture()
