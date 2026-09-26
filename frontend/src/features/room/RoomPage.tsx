@@ -1,0 +1,2 @@
+import {useParams} from "react-router-dom";import RoomWorkflow from "../workflow/RoomWorkflow";
+export default function RoomPage(){const {roomId}=useParams();return <main><h1>Room {roomId}</h1>{roomId&&<RoomWorkflow roomId={Number(roomId)}/>}</main>}
