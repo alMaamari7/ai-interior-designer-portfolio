@@ -1,0 +1,4 @@
+import {useState} from "react";import {useNavigate,Link} from "react-router-dom";import {login as loginApi} from "./api";import {useAuth} from "../../context/useAuth";
+export default function LoginPage(){const [email,setEmail]=useState("");const [password,setPassword]=useState("");const [error,setError]=useState<string|null>(null);const auth=useAuth();const nav=useNavigate();
+ async function submit(e:React.FormEvent){e.preventDefault();try{setError(null);const r=await loginApi({email,password});auth.login(r);nav("/dashboard")}catch(e){setError(e instanceof Error?e.message:"Login failed.")}}
+ return <main><h1>Login</h1><form onSubmit={submit}><input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="E-Mail" required/><input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" required/>{error&&<p role="alert">{error}</p>}<button>Login</button></form><Link to="/register">Register</Link></main>}
