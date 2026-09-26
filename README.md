@@ -250,6 +250,33 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 
 The application can start without an AI provider key. `AI_API_KEY` is only required for endpoints that execute Gemini inference.
 
+## Run with Docker
+
+With Docker and Docker Compose installed, the API and PostgreSQL database can be started together from the repository root:
+
+```bash
+docker compose up --build
+```
+
+The Compose stack waits for PostgreSQL to become healthy, applies the public Alembic migrations, and then starts FastAPI on `http://localhost:8000`.
+
+Verify the running API:
+
+```text
+http://localhost:8000/health
+http://localhost:8000/docs
+```
+
+Expected health response:
+
+```json
+{"status": "ok"}
+```
+
+Gemini inference is optional. To exercise `/vision/analyze`, provide `AI_API_KEY` in your shell or a local `.env` file before starting Compose. Secrets are not committed to the repository.
+
+Stop the stack with `docker compose down`. To also remove the local PostgreSQL volume and reset the database, use `docker compose down -v`.
+
 ### Run tests
 
 From the `backend` directory:
