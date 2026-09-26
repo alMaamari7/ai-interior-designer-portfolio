@@ -1,0 +1,42 @@
+Analyze the provided Overview Images together and create the initial
+Entity and Spatial Map of the room.
+
+The purpose of this analysis is to establish the initial structural
+understanding of the room for subsequent processing phases.
+
+Identify the relevant physical entities that are visibly present in the
+provided Overview Images and determine, for each entity:
+
+- its unique preliminary entity ID;
+- its entity type according to the provided Entity Scope;
+- its object type when sufficiently recognizable;
+- its initial owner within the room structure;
+- its coarse spatial context when visually supported;
+- the Overview Images in which the same physical entity is visible.
+
+Treat all provided Overview Images as different views of the same room.
+Analyze them together and consolidate observations that refer to the
+same physical entity.
+
+Use the provided Room Context as the existing room context and use the
+provided Entity Scope to determine the relevant entity types.
+
+The provided Rules contain mandatory requirements for this analysis.
+You MUST follow and apply all provided Rules when interpreting the
+images, identifying entities, assigning ownership, generating entity
+IDs, determining spatial context, and producing the output.
+
+The provided Hints contain supporting guidance for the analysis.
+Use them to assist your decisions, especially when visual evidence is
+ambiguous or difficult to interpret. Hints are supportive guidance and
+must not override the provided Rules.
+
+Base the result only on information that can be sufficiently supported
+by the provided images and inputs. Do not invent entities, entity types,
+ownership, spatial context, image visibility, or other information.
+
+Keep the analysis limited to the purpose of this phase. Do not perform
+detailed attribute analysis, complete relationship analysis, evidence
+assessment, or decisions about additional image capture.
+
+Produce the result according to the provided Structured Output Schema.
