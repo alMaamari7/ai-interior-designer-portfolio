@@ -1,0 +1,4 @@
+import {useState} from "react";import {useNavigate} from "react-router-dom";import {register} from "./api";import {useAuth} from "../../context/useAuth";
+export default function RegisterPage(){const [form,setForm]=useState({first_name:"",last_name:"",email:"",password:"",confirm_password:""});const [error,setError]=useState<string|null>(null);const auth=useAuth();const nav=useNavigate();
+ async function submit(e:React.FormEvent){e.preventDefault();try{setError(null);const r=await register(form);auth.login(r);nav("/dashboard")}catch(e){setError(e instanceof Error?e.message:"Registration failed.")}}
+ return <main><h1>Register</h1><form onSubmit={submit}>{Object.keys(form).map(k=><input key={k} type={k.includes("password")?"password":k==="email"?"email":"text"} placeholder={k} value={form[k as keyof typeof form]} onChange={e=>setForm({...form,[k]:e.target.value})}/>)}{error&&<p role="alert">{error}</p>}<button>Register</button></form></main>}
