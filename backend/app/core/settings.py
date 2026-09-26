@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     MIN_PASSWORD_LENGTH: int = 8
     FRONTEND_URL: str = "http://localhost:5173"
     AI_API_KEY: str | None = None
+    AI_MODEL: str = "gemini-2.5-flash"
 
 
 settings = Settings()
