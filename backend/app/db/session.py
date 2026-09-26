@@ -1,21 +1,8 @@
-import os
-from collections.abc import Generator
+"""Compatibility re-export for the canonical database configuration.
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+New code should import database objects from app.db.database.
+"""
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+psycopg://postgres:postgres@localhost:5432/ai_interior_designer",
-)
+from app.db.database import SessionLocal, engine, get_db
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
-
-
-def get_db() -> Generator[Session, None, None]:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+__all__ = ["engine", "SessionLocal", "get_db"]
