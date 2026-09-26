@@ -197,6 +197,14 @@ PostgreSQL · environment-based configuration · GitHub Actions CI
 
 ## Run locally
 
+### Prerequisites
+
+- Python 3.12+
+- PostgreSQL running locally
+- a PostgreSQL database named `ai_interior_designer` (or your own database URL)
+
+Clone the repository and install the backend dependencies:
+
 ```bash
 git clone https://github.com/alMaamari7/ai-interior-designer-portfolio.git
 cd ai-interior-designer-portfolio/backend
@@ -206,10 +214,41 @@ python -m venv .venv
 # macOS/Linux: source .venv/bin/activate
 
 pip install -r requirements.txt
+```
+
+Create the backend environment file from the published example:
+
+```bash
+# macOS/Linux
+cp ../.env.example .env
+
+# Windows PowerShell
+Copy-Item ../.env.example .env
+```
+
+The example configuration expects PostgreSQL at `localhost:5432` and the database `ai_interior_designer`. If your credentials, host or database name differ, update `DATABASE_URL` in `backend/.env`.
+
+Initialize or update the public database schema:
+
+```bash
+alembic upgrade head
+```
+
+Start the API:
+
+```bash
 uvicorn app.main:app --reload
 ```
 
-FastAPI exposes the interactive OpenAPI documentation at `/docs`.
+Verify the service at `http://127.0.0.1:8000/health`. Expected response:
+
+```json
+{"status": "ok"}
+```
+
+Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
+
+The application can start without an AI provider key. `AI_API_KEY` is only required for endpoints that execute Gemini inference.
 
 ### Run tests
 
