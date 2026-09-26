@@ -35,3 +35,9 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}/backend
         run: python -m pytest -q
+
+      - name: Build Docker image
+        run: docker build -t ai-interior-designer-portfolio ./backend
+
+      - name: Validate Compose configuration
+        run: docker compose config --quiet
