@@ -1,0 +1,3 @@
+import {useEffect,useState} from "react";import {Link} from "react-router-dom";import {apiFetch} from "../../clients/client";
+type Room={id:number;room_name:string;current_room_type:string;room_status:string};
+export default function DashboardPage(){const [rooms,setRooms]=useState<Room[]>([]);const [error,setError]=useState<string|null>(null);useEffect(()=>{apiFetch("/rooms").then(async r=>{if(!r.ok)throw new Error("Failed to load rooms.");setRooms(await r.json())}).catch(e=>setError(e.message))},[]);return <main><h1>Rooms</h1>{error&&<p>{error}</p>}{rooms.map(r=><Link key={r.id} to={`/rooms/${r.id}`}><article><h2>{r.room_name}</h2><p>{r.current_room_type} · {r.room_status}</p></article></Link>)}</main>}
