@@ -1,0 +1,8 @@
+entity_scope:
+  entities:
+    - Wall
+    - Floor
+    - Door
+    - Window
+    - BuildingElement
+    - RoomObject
